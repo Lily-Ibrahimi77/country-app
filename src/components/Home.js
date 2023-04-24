@@ -1,19 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Table from 'react-bootstrap/Table';
+import { useSelector, useDispatch } from 'react-redux';
+import { Table } from 'react-bootstrap';
 
 import { fetchCountries } from './../api/allCountries';
-import { fetchCountriesStart, fetchCountriesSuccess, fetchCountriesError } from './../features/countriesSlice';
+import SearchBar from './SearchBar'
 
 const Home = () => {
+
   const dispatch = useDispatch();
   const { countriesData, loading, error } = useSelector((state) => state.countries);
 
   useEffect(() => {
-    dispatch(fetchCountriesStart());
-    fetchCountries()
-      .then((data) => dispatch(fetchCountriesSuccess(data)))
-      .catch((error) => dispatch(fetchCountriesError(error)));
+    dispatch(fetchCountries());
   }, [dispatch]);
 
   const tableData = useMemo(() => {
@@ -30,6 +28,7 @@ const Home = () => {
 
   return (
     <div>
+       <SearchBar/>
       <h1>Countries Table</h1>
       {loading && <p>Loading...</p>}
       {error && <p>There was an error fetching the data.</p>}
@@ -54,7 +53,8 @@ const Home = () => {
         </Table>
       )}
     </div>
-  );
+  ); 
+ 
 };
 
 export default Home;
